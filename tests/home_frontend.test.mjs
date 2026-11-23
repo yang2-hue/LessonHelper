@@ -16,24 +16,16 @@ test('home page is the default app entry and sidebar destination', () => {
   assert.match(homeSource, /registerPage\('home'/);
 });
 
-test('home page renders campus hero, personal stats, hot courses, and fun plugins', () => {
+test('home page renders the campus hero, personal stats, and navigation cards', () => {
   assert.match(homeSource, /选一门课/);
-  assert.match(homeSource, /也遇见一群人/);
-  assert.match(homeSource, /学习邀约<br>和校园里的小小连接/);
+  assert.match(homeSource, /home-hero-campus\.png/);
   assert.match(homeSource, /今日课程/);
   assert.match(homeSource, /连续签到/);
-  assert.match(homeSource, /通知个数/);
-  assert.match(homeSource, /热门课程/);
-  assert.match(homeSource, /趣味插件/);
-  assert.match(homeSource, /番茄时钟/);
-  assert.match(homeSource, /今日运气值/);
-  assert.match(homeSource, /替我抉择/);
-  assert.match(homeSource, /薛定谔的待办/);
-  assert.match(homeSource, /答案之书/);
-  assert.match(homeSource, /发布学习邀约/);
-  assert.match(homeSource, /avatarDataUri/);
-  assert.match(homeSource, /api\/courses\/all/);
+  assert.match(homeSource, /新消息/);
+  assert.match(homeSource, /page:\s*'allcourse',\s*name:\s*'课程广场'/);
+  assert.match(homeSource, /page:\s*'treasurebox',\s*name:\s*'百宝箱'/);
+  assert.match(homeSource, /page:\s*'favorites',\s*name:\s*'我的收藏'/);
   assert.match(styleSource, /\.home-hero/);
-  assert.match(styleSource, /\.home-plugin-grid/);
-  assert.match(styleSource, /width: 196px/);
+  assert.match(styleSource, /\.home-stats/);
+  assert.match(styleSource, /\.home-nav-grid/);
 });

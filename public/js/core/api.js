@@ -10,8 +10,7 @@ export function saveToken(token) { localStorage.setItem(AUTH_KEY, token); }
 export function clearToken() { localStorage.removeItem(AUTH_KEY); }
 export function isLoggedIn() { return !!getToken(); }
 
-/** 通用 401 处理：清除无效 token */
-async function handle401(res) {
+async function readResponse(res) {
   if (res.status === 401) {
     clearToken();
     window._currentUser = null;
@@ -22,43 +21,32 @@ async function handle401(res) {
   try { return JSON.parse(text); } catch { return text || {}; }
 }
 
-export async function apiGet(url) {
+async function request(url, { method, body, json = false } = {}) {
   const token = getToken();
-  const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
-  const res = await fetch(url, { headers });
-  return handle401(res);
+  const headers = json ? { 'Content-Type': 'application/json' } : {};
+  if (token) headers.Authorization = `Bearer ${token}`;
+  const res = await fetch(url, { method, headers, body: json ? JSON.stringify(body) : body });
+  return readResponse(res);
 }
 
-export async function apiPost(url, body) {
-  const token = getToken();
-  const headers = { 'Content-Type': 'application/json' };
-  if (token) headers['Authorization'] = `Bearer ${token}`;
-  const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body) });
-  return handle401(res);
+export function apiGet(url) {
+  return request(url);
 }
 
-export async function apiPut(url, body) {
-  const token = getToken();
-  const headers = { 'Content-Type': 'application/json' };
-  if (token) headers['Authorization'] = `Bearer ${token}`;
-  const res = await fetch(url, { method: 'PUT', headers, body: JSON.stringify(body) });
-  return handle401(res);
+export function apiPost(url, body) {
+  return request(url, { method: 'POST', body, json: true });
+}
+
+export function apiPut(url, body) {
+  return request(url, { method: 'PUT', body, json: true });
 }
 
 export async function apiPostFile(url, file) {
   const fd = new FormData();
   fd.append('file', file);
-  const token = getToken();
-  const headers = {};
-  if (token) headers['Authorization'] = `Bearer ${token}`;
-  const res = await fetch(url, { method: 'POST', headers, body: fd });
-  return handle401(res);
+  return request(url, { method: 'POST', body: fd });
 }
 
-export async function apiDelete(url) {
-  const token = getToken();
-  const headers = {};
-  if (token) headers['Authorization'] = `Bearer ${token}`;
-  const res = await fetch(url, { method: 'DELETE', headers });
-  return handle401(res);
+export function apiDelete(url) {
+  return request(url, { method: 'DELETE' });
 }

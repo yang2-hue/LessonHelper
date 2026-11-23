@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js",
-    "test": "node --test tests/*.test.mjs",
+    "test": "node --require ./tests/setup.cjs --test tests/*.test.mjs",
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:ui": "playwright test --ui"

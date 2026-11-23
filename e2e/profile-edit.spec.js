@@ -8,7 +8,7 @@ function profileNav(page) {
 }
 
 async function login(page) {
-  await page.goto('/');
+  await page.goto('/profile');
 
   const loginPrompt = page.locator('#login-prompt-btn');
   if (await loginPrompt.isVisible().catch(() => false)) {

@@ -3,10 +3,10 @@ import assert from 'node:assert/strict';
 
 import { resolveNotificationTarget } from '../public/js/pages/notification_routes.mjs';
 
-test('course post notifications navigate to the course detail page', () => {
-  assert.deepEqual(resolveNotificationTarget('post', 31, 7), {
+test('course post notifications navigate to the forum and target the comment', () => {
+  assert.deepEqual(resolveNotificationTarget('post', 31, 7, 88), {
     page: 'course-detail',
-    data: 7,
+    data: { id: 7, tab: 'forum', targetPostId: 31, scrollToCommentId: 88 },
   });
 });
 
@@ -20,7 +20,7 @@ test('invite notifications navigate to explore', () => {
 test('material notifications navigate to the course detail page', () => {
   assert.deepEqual(resolveNotificationTarget('material', 31, 7), {
     page: 'course-detail',
-    data: 7,
+    data: { id: 7, tab: 'materials' },
   });
 });
 
@@ -45,10 +45,10 @@ test('explore post reply notifications include a comment anchor target', () => {
   });
 });
 
-test('course square post comment notifications navigate to course detail', () => {
-  assert.deepEqual(resolveNotificationTarget('course_square_post', 31, 7), {
+test('course square post comment notifications navigate to the square tab', () => {
+  assert.deepEqual(resolveNotificationTarget('course_square_post', 31, 7, 88), {
     page: 'course-detail',
-    data: 7,
+    data: { id: 7, tab: 'square', scrollToCommentId: 88 },
   });
 });
 

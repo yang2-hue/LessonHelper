@@ -125,6 +125,21 @@ test('course posts accept multiple multipart attachments and expose URLs', async
     assert.equal(result.attachments.length, 2);
     assert.match(result.attachments[0].view_url, /\/view$/);
     assert.match(result.attachments[1].download_url, /\/download$/);
+
+    const plainResponse = await fetch(`${baseUrl}/api/courses/10/posts`, {
+      method: 'POST',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: '纯文本', content: '正文' }),
+    });
+    assert.equal(plainResponse.status, 201);
+    const plainPost = await plainResponse.json();
+
+    const listResponse = await fetch(`${baseUrl}/api/courses/10/posts`);
+    assert.equal(listResponse.status, 200);
+    const posts = await listResponse.json();
+    assert.equal(posts.length, 2);
+    assert.deepEqual(posts.find(post => post.id === result.id).attachments, result.attachments);
+    assert.deepEqual(posts.find(post => post.id === plainPost.id).attachments, []);
   });
 });
 

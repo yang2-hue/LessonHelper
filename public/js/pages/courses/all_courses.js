@@ -10,24 +10,7 @@ import { apiGet } from '../../core/api.js';
 import { registerPage, navigateTo, animIn, animStagger, bindRipples } from '../../core/router.js';
 import { escHtml, createMdInput } from '../../components/ui.js';
 
-/* =============================================
-   大课名称清洗
-   物理剥离末尾班级号数字与"班"字
-   强行保留括号内教学层次限定词
-   ============================================= */
-
-export function cleanBigCourseName(title) {
-  if (!title) return '';
-  const parens = title.match(/[（(].+?[)）]/g) || [];
-  let temp = title;
-  parens.forEach((p, i) => { temp = temp.replace(p, `__PH${i}__`); });
-  // 清除末尾班级号：支持 "07班"、"25班"、孤立数字 "25"、带空格 " 25"
-  temp = temp.replace(/\d{1,3}\s*班\s*$/, '');
-  temp = temp.replace(/[\s ]*\d{1,3}\s*$/, '');
-  temp = temp.replace(/\d{1,3}$/, '');
-  parens.forEach((p, i) => { temp = temp.replace(`__PH${i}__`, p); });
-  return temp.trim();
-}
+export { cleanBigCourseName } from './course-name.js';
 
 /* =============================================
    全校大课缓存（API 已只返回大课）

@@ -101,7 +101,7 @@ test('explore comment endpoint rejects a second comment during the 30s cooldown'
 
   const second = call(router, 'post', '/:postId/comments', { postId: '10' }, { content: 'Second' });
   assert.equal(second.statusCode, 429);
-  assert.equal(second.body.retry_after > 0, true);
+  assert.equal(second.body.retryAfter > 0, true);
 });
 
 test('reply notifications persist the newly created comment id as an anchor', () => {

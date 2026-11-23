@@ -9,7 +9,7 @@ function createDb(SQL) {
     CREATE TABLE users (id INTEGER PRIMARY KEY, nickname TEXT);
     CREATE TABLE courses (
       id INTEGER PRIMARY KEY, title TEXT, description TEXT, teacher TEXT,
-      semester TEXT, created_at TEXT
+      semester TEXT, created_at TEXT, big_course_id INTEGER
     );
     CREATE TABLE user_courses (course_id INTEGER);
     CREATE TABLE materials (
@@ -24,6 +24,10 @@ function createDb(SQL) {
       id INTEGER PRIMARY KEY, creator_id INTEGER, title TEXT, category TEXT,
       description TEXT, max_people INTEGER, current_count INTEGER,
       status TEXT, expires_at TEXT, created_at TEXT
+    );
+    CREATE TABLE card_templates (
+      id TEXT PRIMARY KEY, name TEXT, description TEXT, icon TEXT, category TEXT,
+      styles TEXT, is_official INTEGER, usage_count INTEGER, created_at TEXT, creator_id INTEGER
     );
 
     INSERT INTO users VALUES (1, '小林');

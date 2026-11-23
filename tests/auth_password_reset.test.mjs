@@ -4,8 +4,6 @@ import bcrypt from 'bcryptjs';
 import initSqlJs from 'sql.js';
 import createAuthRouter from '../routes/auth.js';
 
-process.env.NODE_ENV = 'test';
-
 function createDb(SQL) {
   const raw = new SQL.Database();
   raw.run(`
@@ -77,7 +75,7 @@ test('password reset request creates a verification code for an existing student
   const router = createAuthRouter(db);
 
   const result = await call(router, 'post', '/forgot-password', {
-    body: { studentId: '123456789' },
+    body: { studentId: '123456789', turnstileToken: 'test-token' },
   });
 
   assert.equal(result.statusCode, 200);

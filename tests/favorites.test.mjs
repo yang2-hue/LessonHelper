@@ -11,7 +11,7 @@ function createDb(SQL) {
     CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT, nickname TEXT);
     CREATE TABLE courses (
       id INTEGER PRIMARY KEY, title TEXT, teacher TEXT, description TEXT,
-      semester TEXT, created_at TEXT
+      semester TEXT, created_at TEXT, big_course_id INTEGER
     );
     CREATE TABLE user_courses (id INTEGER PRIMARY KEY, user_id INTEGER, course_id INTEGER);
     CREATE TABLE posts (
@@ -29,8 +29,8 @@ function createDb(SQL) {
       UNIQUE(user_id, post_id)
     );
     INSERT INTO users VALUES (1, 'u1', '小林');
-    INSERT INTO courses VALUES (10, '线性代数', '张老师', '', '2026春', '2026-06-01');
-    INSERT INTO courses VALUES (11, '高等数学', '李老师', '', '2026春', '2026-06-02');
+    INSERT INTO courses VALUES (10, '线性代数', '张老师', '', '2026春', '2026-06-01', NULL);
+    INSERT INTO courses VALUES (11, '高等数学', '李老师', '', '2026春', '2026-06-02', NULL);
     INSERT INTO user_courses VALUES (1, 1, 10);
     INSERT INTO posts VALUES (20, 10, 1, '矩阵求逆', '分享一种做法', '2026-06-02');
   `);

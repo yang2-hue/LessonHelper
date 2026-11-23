@@ -5,16 +5,13 @@ import { readFile } from 'node:fs/promises';
 const detailSource = await readFile(new URL('../public/js/pages/courses/detail.js', import.meta.url), 'utf8');
 
 test('course detail enforces read-only mode for non-enrolled users', () => {
-  // The detail page checks enrollment and conditionally renders
-  assert.match(detailSource, /showPublishBlockedToast/);
-  // Publish button is disabled for non-enrolled users
-  assert.match(detailSource, /btn-disabled/);
-  // 交友 tab is only shown for enrolled users
+  assert.match(detailSource, /const enrolled = await checkEnrollment\(courseId\)/);
+  assert.match(detailSource, /只读模式/);
+  assert.match(detailSource, /const squareTab = enrolled\s*\?/);
   assert.match(detailSource, /if \(enrolled\) await renderCourseSquareTab/);
 });
 
-test('course detail never renders a publish button for non-enrolled users in the plaza', () => {
-  // The publish button is conditionally rendered based on enrollment
-  assert.match(detailSource, /const publishBtn = enrolled/);
-  assert.match(detailSource, /btn-disabled btn-compact/);
+test('course detail only renders the composer and material upload for enrolled users', () => {
+  assert.match(detailSource, /const composeBar = enrolled\s*\?/);
+  assert.match(detailSource, /const uploadBtn = enrolled\s*\?/);
 });
